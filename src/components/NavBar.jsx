@@ -2,7 +2,7 @@ import React from 'react'
 import { Fragment } from 'react';
 import { Menu, Transition } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom'
 const navigation = [
     { name: 'Home', href: '/' },
     { name: 'About Us', href: '/about-us' },
@@ -11,10 +11,17 @@ const navigation = [
     { name: 'Faculty', href: '/faculty' },
     { name: 'Students', href: '/students' },
     { name: 'Gallery', href: '/gallery' },
-    { name: 'Contact Us', href: '/contact-us' },
+    { name: 'Contact Us', href: '/#contact-form' },
   ];
-const NavBar = () => {
-  return (
+const NavBar = ({ scrollToContactForm }) => {
+    const navigate = useNavigate();
+
+    const handleContactUsClick = (e) => {
+      e.preventDefault(); 
+      navigate('/'); 
+      setTimeout(() => scrollToContactForm(), 100); 
+    };
+    return (
     <div className="bg-primary text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
@@ -24,13 +31,14 @@ const NavBar = () => {
           </div>
           <div className="hidden md:flex md:ml-auto space-x-4">
             {navigation.map((item) => (
-              <Link
-                key={item.name}
-                to={item.href}
-                className="text-white px-3 py-2 rounded-md text-sm font-medium"
-              >
-                {item.name}
-              </Link>
+             <Link
+             key={item.name}
+             to={item.href}
+             className="text-white px-3 py-2 rounded-md text-sm font-medium"
+             onClick={item.name === 'Contact Us' ? handleContactUsClick : undefined}
+           >
+             {item.name}
+           </Link>
             ))}
           </div>
           <div className="-mr-2 flex md:hidden">
@@ -54,13 +62,14 @@ const NavBar = () => {
                       <Menu.Item key={item.name}>
                         {({ active }) => (
                           <Link
-                            to={item.href}
-                            className={`${
-                              active ? 'bg-primary text-white' : 'text-white'
-                            } block px-4 py-2 text-sm`}
-                          >
-                            {item.name}
-                          </Link>
+                          to={item.href}
+                          className={`${
+                            active ? 'bg-primary text-white' : 'text-white'
+                          } block px-4 py-2 text-sm`}
+                          onClick={item.name === 'Contact Us' ? handleContactUsClick : undefined}
+                        >
+                          {item.name}
+                        </Link>
                         )}
                       </Menu.Item>
                     ))}
